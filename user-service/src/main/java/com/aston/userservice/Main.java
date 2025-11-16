@@ -2,23 +2,26 @@ package com.aston.userservice;
 
 import com.aston.userservice.entity.User;
 import com.aston.userservice.service.UserService;
+import com.aston.userservice.util.HibernateUtil;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
     private static final UserService userService = new UserService();
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+
         while (true) {
-                System.out.println("==== USER SERVICE ====");
-                System.out.println("1. Создать пользователя");
-                System.out.println("2. Показать всех");
-                System.out.println("3. Найти по ID");
-                System.out.println("4. Обновить пользователя");
-                System.out.println("5. Удалить пользователя");
-                System.out.println("0. Выход");
+            System.out.println("==== USER SERVICE ====");
+            System.out.println("1. Создать пользователя");
+            System.out.println("2. Показать всех");
+            System.out.println("3. Найти по ID");
+            System.out.println("4. Обновить пользователя");
+            System.out.println("5. Удалить пользователя");
+            System.out.println("0. Выход");
 
             System.out.print("Выберите действие: ");
             int choice = Integer.parseInt(scanner.nextLine());
@@ -31,6 +34,7 @@ public class Main {
                 case 5 -> deleteUser();
                 case 0 -> {
                     System.out.println("Выход...");
+                    HibernateUtil.shutdown();
                     System.exit(0);
                 }
                 default -> System.out.println("Неверный выбор!");
@@ -82,3 +86,5 @@ public class Main {
         System.out.println("Пользователь удалён!");
     }
 }
+
+

@@ -18,7 +18,6 @@ public class User {
     private LocalDateTime createdAt;
 
     public User() {
-        this.createdAt = LocalDateTime.now();
     }
 
     public User(String name, String email, int age) {
@@ -28,15 +27,18 @@ public class User {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Getters/Setters
     public Long getId() { return id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
     public int getAge() { return age; }
     public void setAge(int age) { this.age = age; }
+
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
     @Override
     public String toString() {
@@ -49,4 +51,5 @@ public class User {
                 '}';
     }
 }
+
 
