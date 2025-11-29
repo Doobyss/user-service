@@ -18,5 +18,3 @@
         <mapping class="com.aston.userservice.entity.User"/>
     </session-factory>
 </hibernate-configuration>
-
-
