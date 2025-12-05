@@ -4,6 +4,8 @@ import com.aston.userservice.dto.UserRequestDto;
 import com.aston.userservice.dto.UserResponseDto;
 import com.aston.userservice.entity.User;
 import com.aston.userservice.exception.UserNotFoundException;
+import com.aston.userservice.kafka.UserEvent;
+import com.aston.userservice.kafka.UserEventProducer;
 import com.aston.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +17,16 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+    private final UserEventProducer eventProducer;
 
     @Override
     public UserResponseDto create(UserRequestDto dto) {
         User user = new User(null, dto.name(), dto.email(), dto.age());
         User saved = repository.save(user);
+
+        // >>> Отправка события в Kafka
+        eventProducer.send(new UserEvent("CREATE", saved.getEmail()));
+
         return toDto(saved);
     }
 
@@ -52,7 +59,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
+        User user = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
         repository.deleteById(id);
+
+        // >>> Отправка события в Kafka
+        eventProducer.send(new UserEvent("DELETE", user.getEmail()));
     }
 
     private UserResponseDto toDto(User user) {
@@ -64,6 +77,3 @@ public class UserServiceImpl implements UserService {
         );
     }
 }
-
-
-

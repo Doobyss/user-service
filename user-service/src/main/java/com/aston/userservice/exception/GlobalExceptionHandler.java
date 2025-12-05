@@ -12,4 +12,3 @@ public class GlobalExceptionHandler {
         return ex.getMessage();
     }
 }
-
